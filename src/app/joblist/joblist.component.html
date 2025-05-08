@@ -1,0 +1,7 @@
+<p>joblist works!</p>
+
+@for (job of jobs(); track job._id) {
+<div>
+    <span>{{ job.jobTitle }}</span>
+</div>
+}
