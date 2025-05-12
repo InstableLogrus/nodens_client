@@ -10,7 +10,7 @@ enum ApplicationStatus {
 }
 
 export interface Job {
-    _id: string;
+    id: string;
     jobTitle: string;
     language: string;
     company: string;

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import {Job} from '../interfaces/user.interface'
+import { catchError, Observable, tap } from 'rxjs';
+import {Job} from '../interfaces/job.interface'
 
 // ref: https://angular.fr/http/client
 
@@ -13,7 +13,11 @@ export class JobService {
 
     getJobs(): Observable<Job[]> {
         return this.http.get<Job[]>(this.url).pipe(
-            tap(jobs => this.jobs.set(jobs))
+            tap(jobs => this.jobs.set(jobs)),
+            catchError(error => {
+                console.log("Could not fetch job list", error);
+                throw error;
+            })
         )
     }
 } 
