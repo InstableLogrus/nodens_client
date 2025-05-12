@@ -1,0 +1,21 @@
+// Job Model
+
+enum ApplicationStatus {
+    None = "NONE",
+    Read = "READ",
+    Considered = "CONSIDERED",
+    Sent = "SENT",
+    Accepted = "ACCEPTED",
+    Refused = "REFUSED",
+}
+
+export interface Job {
+    _id: string;
+    jobTitle: string;
+    language: string;
+    company: string;
+    link: string;
+    source: string;
+    user: string;
+    status?: ApplicationStatus;
+}
