@@ -32,7 +32,7 @@ const catch406Error = catchHttpError(406);
 const catch500Error = catchHttpError(500);
 
 function applyCredentials(request: HttpRequest<any>, authService: AuthService): HttpRequest<any> {
-    console.log("apply credential! ", authService.accessToken);
+    // console.log("apply credential! ", authService.accessToken);
     return request.clone({
         setHeaders: { Authorization: 'Bearer ' + authService.accessToken }
     });

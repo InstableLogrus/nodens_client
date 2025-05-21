@@ -2,22 +2,36 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap } from 'rxjs';
 import {Job} from '../interfaces/job.interface'
+import { FormControl } from '@angular/forms';
 
 // ref: https://angular.fr/http/client
+
+// loading indicator https://blog.angular-university.io/angular-loading-indicator/
 
 @Injectable({providedIn: 'root',})
 export class JobService {
     private http = inject(HttpClient);
     public jobs = signal<Job[]>([]);
-    readonly url = 'http://localhost:5000/job';
+    public isLoading = signal<boolean>(false);
 
-    getJobs(): Observable<Job[]> {
-        return this.http.get<Job[]>(this.url).pipe(
-            tap(jobs => this.jobs.set(jobs)),
-            catchError(error => {
-                console.log("Could not fetch job list", error);
-                throw error;
-            })
-        )
+    readonly url = 'http://localhost:5000/job';
+    
+    searchField = new FormControl('');
+
+    getJobs(query:string = ""): Observable<Job[]> {
+        this.isLoading.set(true);
+        const query_url = `${this.url}/?query=${query}`;
+        return this.http
+            .get<Job[]>(query_url)
+            .pipe(
+                tap(jobs => {
+                    this.jobs.set(jobs);
+                    this.isLoading.set(false);
+                }),
+                catchError(error => {
+                    this.isLoading.set(false);
+                    throw error;
+                })
+            )
     }
 } 

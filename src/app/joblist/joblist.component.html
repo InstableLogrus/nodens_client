@@ -1,26 +1,47 @@
 <p>joblist works!</p>
 
 
+<mat-form-field class="search-bar">
+  <mat-label>Rechercher</mat-label>
+  <input matInput type="text" [formControl]="searchField"  placeholder="termes">
+  <!-- <input matInput type="text" [(ngModel)]="value" > -->
+  <!-- <mat-hint>Termes de la recherche</mat-hint> -->
+  @if (searchField.value ) {
+  <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearchField()">
+    <mat-icon>
+      @if (isLoading()) {
+        <mat-spinner [diameter]="20" ></mat-spinner>
+      } 
+      @else {
+        clear
+      }
+    </mat-icon>
+  </button>
+  }
+  <!-- @if (isLoading()) {
+      <mat-spinner matSuffix  [diameter]="20" style="display: inline-flex"></mat-spinner>
+    } -->
+</mat-form-field>
 <mat-list>
-    @for (job of jobs(); track job.id) {
-    <mat-list-item>
-        <mat-card appearance="outlined">
-            <mat-card-header>
-                {{ job.jobTitle }}
-            </mat-card-header>
-            <mat-card-content>
-                company: {{job.company}}
-            </mat-card-content>
-        </mat-card>
-    </mat-list-item>
-    }
+  @for (job of jobs(); track job.id) {
+  <mat-list-item>
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        {{ job.jobTitle }}
+      </mat-card-header>
+      <mat-card-content>
+        company: {{job.company}}
+      </mat-card-content>
+    </mat-card>
+  </mat-list-item>
+  }
 </mat-list>
 
 <mat-card appearance="outlined">
-    <mat-card-header>
-        test title
-    </mat-card-header>
-    <mat-card-content>
-        test content
-    </mat-card-content>
+  <mat-card-header>
+    test title
+  </mat-card-header>
+  <mat-card-content>
+    test content
+  </mat-card-content>
 </mat-card>

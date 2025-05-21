@@ -6,6 +6,8 @@ store demands and prospect
 prevent duplicate 
 
 
+icons list: https://jossef.github.io/material-design-icons-iconfont/
+
 ...
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
