@@ -45,7 +45,7 @@ export class JoblistComponent implements OnInit, OnDestroy {
         this.searchField.setValue("");
     }
 
-    updateSearchField() {
+    updateList() {
         this.jobService.getJobs(this.searchField.value ?? "").subscribe();
     }
 

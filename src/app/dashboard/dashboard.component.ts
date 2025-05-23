@@ -57,7 +57,7 @@ export class DashboardComponent {
         console.log("result: ", result);
         this.jobService.createJob(result).subscribe(job=>{
           console.log("created: ", job);
-          this.jobList.updateSearchField(); // update list
+          this.jobList.updateList(); // update list
         });
       }
     });
