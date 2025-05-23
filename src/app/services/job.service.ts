@@ -18,6 +18,7 @@ export class JobService {
     
     searchField = new FormControl('');
 
+    // API to get list of jobs (with filters)
     getJobs(query:string = ""): Observable<Job[]> {
         this.isLoading.set(true);
         const query_url = `${this.url}/?query=${query}`;
@@ -33,5 +34,23 @@ export class JobService {
                     throw error;
                 })
             )
+    }
+
+    // API to create a new job
+    createJob(job:Omit<Job, 'id'>): Observable<Job> {
+        const api_url = `${this.url}/`;
+        this.isLoading.set(true);
+        return this.http
+            .post<Job>(api_url, job)
+            .pipe(
+                tap(job=> {
+                    this.isLoading.set(false);
+                }),
+                catchError(error=> {
+                    this.isLoading.set(false);
+                    throw error;
+                })
+            );
+
     }
 } 

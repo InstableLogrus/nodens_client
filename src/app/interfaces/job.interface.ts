@@ -1,6 +1,6 @@
 // Job Model
 
-enum ApplicationStatus {
+export enum ApplicationStatus {
     None = "NONE",
     Read = "READ",
     Considered = "CONSIDERED",

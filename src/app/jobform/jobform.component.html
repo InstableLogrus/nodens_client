@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Job form</h2>
+<mat-dialog-content>
+    <p>Enter a new job</p>
+    <form [formGroup]="jobForm">
+
+        <mat-form-field>
+            <mat-label>job</mat-label>
+            <input matInput formControlName="jobTitle" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>language</mat-label>
+            <input matInput formControlName="language" />
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close] (click)="onSubmit()" [disabled]="!jobForm.valid" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
