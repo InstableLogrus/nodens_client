@@ -1,4 +1,4 @@
-import { ApplicationInitStatus, Component, inject } from '@angular/core';
+import { ApplicationInitStatus, Component, inject, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { JoblistComponent } from '../joblist/joblist.component';
 import { JobformComponent } from '../jobform/jobform.component';
@@ -32,6 +32,8 @@ export class DashboardComponent {
 
   readonly dialog = inject(MatDialog);
   private jobService = inject(JobService);
+  // private jobList = inject(JoblistComponent);
+  @ViewChild(JoblistComponent) jobList!:JoblistComponent;
 
   openDialog(): void {
 
@@ -55,8 +57,8 @@ export class DashboardComponent {
         console.log("result: ", result);
         this.jobService.createJob(result).subscribe(job=>{
           console.log("created: ", job);
+          this.jobList.updateSearchField(); // update list
         });
-        this.jobService.getJobs().subscribe(); // update list
       }
     });
   }

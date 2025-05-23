@@ -45,6 +45,10 @@ export class JoblistComponent implements OnInit, OnDestroy {
         this.searchField.setValue("");
     }
 
+    updateSearchField() {
+        this.jobService.getJobs(this.searchField.value ?? "").subscribe();
+    }
+
     ngOnInit() {
         this.subscription = new Subscription();
 
@@ -59,6 +63,8 @@ export class JoblistComponent implements OnInit, OnDestroy {
             )
             .subscribe();
         this.subscription.add(q);
+
+
     }
 
 
