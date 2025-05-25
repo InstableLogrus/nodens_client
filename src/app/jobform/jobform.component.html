@@ -11,6 +11,26 @@
             <mat-label>language</mat-label>
             <input matInput formControlName="language" />
         </mat-form-field>
+        <mat-form-field>
+            <mat-label>company</mat-label>
+            <input matInput formControlName="company" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>link</mat-label>
+            <input matInput formControlName="link" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>source</mat-label>
+            <input matInput formControlName="source" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>status</mat-label>
+            <mat-select formControlName="status">
+                @for (status of applicationStatusList; track status) {
+                <mat-option [value]="status">{{status}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>

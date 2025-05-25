@@ -54,9 +54,7 @@ export class DashboardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        console.log("result: ", result);
         this.jobService.createJob(result).subscribe(job=>{
-          console.log("created: ", job);
           this.jobList.updateList(); // update list
         });
       }

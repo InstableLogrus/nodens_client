@@ -1,5 +1,5 @@
 import { Component, inject, Input, model } from '@angular/core';
-import { FormGroup, FormsModule, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, FormControl, Validators, ReactiveFormsModule, StatusChangeEvent } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +12,7 @@ import {
   MatDialogContent,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
 
 
@@ -47,6 +48,7 @@ interface JobData {
     MatDialogActions,
     MatDialogClose,
     ReactiveFormsModule,
+    MatSelectModule,
   ],
   templateUrl: './jobform.component.html',
   styleUrl: './jobform.component.scss'
@@ -55,6 +57,8 @@ export class JobformComponent {
   readonly dialogRef = inject(MatDialogRef<JobformComponent>);
   readonly data = inject<JobData>(MAT_DIALOG_DATA);
   readonly job = model(this.data);
+
+  applicationStatusList: string[] = [...Object.values(ApplicationStatus)];
 
   jobForm = new FormGroup<JobData>({
     jobTitle: new FormControl(this.data?.jobTitle ?? "", { validators: [Validators.required] }),
