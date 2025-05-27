@@ -1,47 +1,40 @@
 <p>joblist works!</p>
 
+<div class="joblist-container">
+  <mat-form-field class="search-bar">
+    <mat-label>Rechercher</mat-label>
+    <input matInput type="text" [formControl]="searchField"  placeholder="termes">
+    <!-- <input matInput type="text" [(ngModel)]="value" > -->
+    <!-- <mat-hint>Termes de la recherche</mat-hint> -->
+    @if (searchField.value ) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearchField()">
+      <mat-icon>
+        @if (isLoading()) {
+          <mat-spinner [diameter]="20" ></mat-spinner>
+        } 
+        @else {
+          clear
+        }
+      </mat-icon>
+    </button>
+    }
+    <!-- @if (isLoading()) {
+        <mat-spinner matSuffix  [diameter]="20" style="display: inline-flex"></mat-spinner>
+      } -->
+  </mat-form-field>
+  <mat-list class="joblist">
+    @for (job of jobs(); track job.id) {
+    <mat-list-item>
+      
+      <div matListItemTitle>{{job.jobTitle}}</div>
+      <div matListItemLine class="jobdetail">{{job.company}} <a href="{{job.link}}"><mat-icon >link</mat-icon></a></div>
+      <div matListItemLine><mat-chip class="jobstatus-chip">{{job.status}}</mat-chip></div>
+      <div matListItemMeta class="itembuttons">
+        <button class="editbutton" (click)="editItem(job)">Edit</button>
+        <button class="deletebutton" (click)="deleteItem(job)">Delete</button>
+      </div>
+    </mat-list-item>
+    }
+  </mat-list>
+</div>
 
-<mat-form-field class="search-bar">
-  <mat-label>Rechercher</mat-label>
-  <input matInput type="text" [formControl]="searchField"  placeholder="termes">
-  <!-- <input matInput type="text" [(ngModel)]="value" > -->
-  <!-- <mat-hint>Termes de la recherche</mat-hint> -->
-  @if (searchField.value ) {
-  <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearchField()">
-    <mat-icon>
-      @if (isLoading()) {
-        <mat-spinner [diameter]="20" ></mat-spinner>
-      } 
-      @else {
-        clear
-      }
-    </mat-icon>
-  </button>
-  }
-  <!-- @if (isLoading()) {
-      <mat-spinner matSuffix  [diameter]="20" style="display: inline-flex"></mat-spinner>
-    } -->
-</mat-form-field>
-<mat-list>
-  @for (job of jobs(); track job.id) {
-  <mat-list-item>
-    <mat-card appearance="outlined">
-      <mat-card-header>
-        {{ job.jobTitle }}
-      </mat-card-header>
-      <mat-card-content>
-        company: {{job.company}}
-      </mat-card-content>
-    </mat-card>
-  </mat-list-item>
-  }
-</mat-list>
-
-<mat-card appearance="outlined">
-  <mat-card-header>
-    test title
-  </mat-card-header>
-  <mat-card-content>
-    test content
-  </mat-card-content>
-</mat-card>

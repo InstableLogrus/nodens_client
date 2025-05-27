@@ -1,3 +1,53 @@
+@use '@angular/material' as mat;
+
 .search-bar {
-  width: 200px;
+  width: 100%;
+}
+
+.jobstatus-chip {
+  height: auto;
+  min-height: auto;
+  font-size: 5px;
+  
+  @include mat.chips-overrides((
+    outline-color: gray,
+    label-text-size: 8px,
+  ));
+
+}
+
+.jobitemdate {
+  align-self: flex-start;
+}
+
+.itembuttons {
+  visibility:hidden;
+
+  & > *:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.mdc-list-item:has(.itembuttons):hover {
+  .itembuttons {
+    visibility: visible;
+  }
+}
+
+.joblist-container {
+  display: block;
+  width: 50vw;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.jobdetail {
+  a {
+    color: gray;
+  }
+  .mat-icon {
+    vertical-align: middle;
+  }
 }

@@ -57,6 +57,8 @@ export class JobformComponent {
   readonly dialogRef = inject(MatDialogRef<JobformComponent>);
   readonly data = inject<JobData>(MAT_DIALOG_DATA);
   readonly job = model(this.data);
+  
+  
 
   applicationStatusList: string[] = [...Object.values(ApplicationStatus)];
 
@@ -82,5 +84,6 @@ export class JobformComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
 
 }
