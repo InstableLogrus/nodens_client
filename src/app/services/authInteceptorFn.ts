@@ -79,8 +79,6 @@ export const authInterceptor: HttpInterceptorFn = (
     const loginForm$ = defer(() => (router.navigateByUrl('/login'), EMPTY));
     const redirectLogin$ = defer(() => (authService.logout(), loginForm$));
 
-    console.log("authInterceptor function ", req);
-
     if (InterceptorSkipHeader.checkHeader(req)) {
         const req2 = InterceptorSkipHeader.deleteHeader(req);
         return next(req2);

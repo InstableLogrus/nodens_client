@@ -22,9 +22,10 @@ import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
 
-// ------------- dialog edit
+// ------------- dialog edit (use job form common with creation)
 
-// ------------- dialog delete
+// ------------- dialog delete (use CDK dialog)
+
 @Component({
     selector: 'joblist-delete-dialog',
     templateUrl: 'joblist-delete-dialog.html',
@@ -56,65 +57,66 @@ export class JobListDeleteDialog {
     styleUrl: './joblist.component.scss'
 })
 
+
+
 // search bar -> https://harikrishnan6336.medium.com/angular-machine-coding-autocomplete-search-bar-38718ea2fcd5
 
+// list of the jobs with filtering and editing capability
 export class JoblistComponent implements OnInit, OnDestroy {
+    // job service -> API access
     private readonly jobService = inject(JobService);
     private subscription!: Subscription;
     jobs = this.jobService.jobs;
+
+    // loading flag common for all API operations
     isLoading = this.jobService.isLoading;
 
+    // input for search/filtering
     searchField = new FormControl('');
 
-
+    // dialogs
     readonly deleteDialog = inject(Dialog);
-
     readonly editDialog = inject(MatDialog);
 
+    // searchfield clear button action
     clearSearchField() {
         this.searchField.setValue("");
     }
 
+    // update the list from API
     updateList() {
         this.jobService.getJobs(this.searchField.value ?? "").subscribe();
     }
 
-    deleteItem(job: Job) {
-        // console.log("deletejob: ", job.id, job);
-
-
+    // delete a job
+    deleteItem(job: Job) { 
         const dialogRef = this.deleteDialog.open<Job>(JobListDeleteDialog, {
             data: job,
         });
 
         dialogRef.closed.subscribe((job) => {
-            // console.log("deleting: ", job)
             if (!job) return;
 
             this.jobService.deleteJob(job.id).subscribe((result) => {
-                // console.log("deleted: ", result);
                 this.updateList();
             });
         })
-
     }
 
+    // edit a job (with confirmation dialog)
     editItem(job: Job) {
-        // console.log("edit item: ", job.id);
-
         const editDialogRef = this.editDialog.open(JobformComponent, {
             data: job,
         });
 
         editDialogRef.afterClosed().subscribe((changedJob : Job) => {
             this.jobService.updateJob(changedJob).subscribe((result)=> {
-                // console.log("updated: ", result);
                 this.updateList();
             })
         })
-
     }
 
+    // init of the list -> initial loading + event searchfield
     ngOnInit() {
         this.subscription = new Subscription();
 
@@ -129,13 +131,10 @@ export class JoblistComponent implements OnInit, OnDestroy {
             )
             .subscribe();
         this.subscription.add(q);
-
-
     }
 
-
+    // destructor -> release subscriptions 
     ngOnDestroy(): void {
-        console.log("destroy!");
         this.subscription?.unsubscribe();
     }
 }
