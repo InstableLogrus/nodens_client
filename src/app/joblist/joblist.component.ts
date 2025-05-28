@@ -1,33 +1,38 @@
 import { Component, inject, Injectable, OnDestroy, OnInit, Inject } from '@angular/core';
 import { debounce, debounceTime, Subscription, switchMap } from 'rxjs';
 import { JobService } from '../services/job.service';
+import { JobformComponent } from '../jobform/jobform.component';
+import { ApplicationStatus } from '../interfaces/job.interface';
 
 import { Job } from '../interfaces/job.interface';
 
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import {Dialog, DialogModule, DialogRef} from '@angular/cdk/dialog';
-import {DIALOG_DATA} from '@angular/cdk/dialog';
+import { Dialog, DialogModule, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
+
+// ------------- dialog edit
 
 // ------------- dialog delete
 @Component({
-  selector: 'joblist-delete-dialog',
-  templateUrl: 'joblist-delete-dialog.html',
-  styleUrl: 'joblist-delete-dialog.scss',
+    selector: 'joblist-delete-dialog',
+    templateUrl: 'joblist-delete-dialog.html',
+    styleUrl: 'joblist-delete-dialog.scss',
 })
 export class JobListDeleteDialog {
-  dialogRef = inject(DialogRef);
-  constructor(@Inject(DIALOG_DATA) public data: Job) { }
+    dialogRef = inject(DialogRef);
+    constructor(@Inject(DIALOG_DATA) public data: Job) { }
 }
 
 // ------------- job list
@@ -61,9 +66,11 @@ export class JoblistComponent implements OnInit, OnDestroy {
 
     searchField = new FormControl('');
 
-    
-    deleteDialog = inject(Dialog);
-        
+
+    readonly deleteDialog = inject(Dialog);
+
+    readonly editDialog = inject(MatDialog);
+
     clearSearchField() {
         this.searchField.setValue("");
     }
@@ -72,29 +79,40 @@ export class JoblistComponent implements OnInit, OnDestroy {
         this.jobService.getJobs(this.searchField.value ?? "").subscribe();
     }
 
-    deleteItem(job : Job) {
-        console.log("deletejob: ", job.id, job);
+    deleteItem(job: Job) {
+        // console.log("deletejob: ", job.id, job);
 
-        
+
         const dialogRef = this.deleteDialog.open<Job>(JobListDeleteDialog, {
             data: job,
         });
-        
+
         dialogRef.closed.subscribe((job) => {
-            console.log("deleting: ", job)
+            // console.log("deleting: ", job)
             if (!job) return;
 
-            this.jobService.deleteJob(job.id).subscribe((result)=>{
-                console.log("deleted: ", result);
+            this.jobService.deleteJob(job.id).subscribe((result) => {
+                // console.log("deleted: ", result);
                 this.updateList();
             });
         })
 
     }
 
-    editItem(job : Job) {
-        console.log("edit item: ", job.id);
-        
+    editItem(job: Job) {
+        // console.log("edit item: ", job.id);
+
+        const editDialogRef = this.editDialog.open(JobformComponent, {
+            data: job,
+        });
+
+        editDialogRef.afterClosed().subscribe((changedJob : Job) => {
+            this.jobService.updateJob(changedJob).subscribe((result)=> {
+                // console.log("updated: ", result);
+                this.updateList();
+            })
+        })
+
     }
 
     ngOnInit() {
@@ -107,7 +125,7 @@ export class JoblistComponent implements OnInit, OnDestroy {
         const q = this.searchField.valueChanges
             .pipe(
                 debounceTime(300), // prevent hammering the server
-                switchMap((input)=>this.jobService.getJobs(input as string))
+                switchMap((input) => this.jobService.getJobs(input as string))
             )
             .subscribe();
         this.subscription.add(q);

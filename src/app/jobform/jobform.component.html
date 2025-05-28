@@ -1,8 +1,18 @@
 <h2 mat-dialog-title>Job form</h2>
 <mat-dialog-content>
-    <p>Enter a new job</p>
+    @if (!data.id) {
+        <p>Enter a new job</p>
+    }
+    @else {
+        <p>editing job</p>
+    }
     <form [formGroup]="jobForm">
-
+        <input matInput formControlName="id" readonly hidden />
+        @if (data.id) {
+            <!-- <mat-form-field>
+                <mat-label>id</mat-label>
+            </mat-form-field> -->
+        }
         <mat-form-field>
             <mat-label>job</mat-label>
             <input matInput formControlName="jobTitle" />
@@ -34,6 +44,13 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close] (click)="onSubmit()" [disabled]="!jobForm.valid" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close] (click)="onSubmit()" [disabled]="!jobForm.valid" cdkFocusInitial>
+        @if (data.id) {
+            Save
+        }
+        @else {
+            Create
+        }
+    </button>
 </mat-dialog-actions>

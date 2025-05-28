@@ -59,6 +59,23 @@ export class JobService {
 
     }
 
+    // API to edit job
+    updateJob(job: Job): Observable<Object> {
+        const api_url = `${this.url}/`;
+        this.isLoading.set(true);
+        return this.http
+            .put(api_url, job)
+            .pipe(
+                tap(savedJob => {
+                    this.isLoading.set(false);
+                }),
+                catchError(error => {
+                    this.isLoading.set(false);
+                    throw error;
+                })
+            )
+    }
+
     // API to delete job
     deleteJob(jobId: string): Observable<API_Answer> {
         const api_url = `${this.url}/${jobId}`;

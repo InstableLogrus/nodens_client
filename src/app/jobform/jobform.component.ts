@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 
 
 interface JobData {
+  id: FormControl<string | null>;
   jobTitle: FormControl<string | null>;
   language: FormControl<string | null>;
   company: FormControl<string | null>;
@@ -63,6 +64,7 @@ export class JobformComponent {
   applicationStatusList: string[] = [...Object.values(ApplicationStatus)];
 
   jobForm = new FormGroup<JobData>({
+    id: new FormControl(this.data?.id ?? ""),
     jobTitle: new FormControl(this.data?.jobTitle ?? "", { validators: [Validators.required] }),
     language: new FormControl(this.data?.language ?? ""),
     company: new FormControl(this.data?.company ?? "", { validators: [Validators.required] }),
