@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+
+// import { JobService } from './services/job.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,37 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'nodens';
+  // private jobService = inject(JobService);
 
+  // // ----- managing paste from clipboard
+  // myValue = "Value";
+  // pastedValue = "";
+
+  // onPaste(event: ClipboardEvent) {
+  //   navigator.clipboard
+  //     .readText()
+  //     .then(
+  //       (cliptext) => {
+  //         const linkedinRef = checkLinkedin(cliptext);
+  //         console.log("pasted: ", linkedinRef);
+  //         if (linkedinRef) {
+  //           this.jobService.fromLinkedin(linkedinRef).subscribe(newJob=> {
+  //             console.log("newjob: ", newJob);
+
+  //           });
+  //         }
+  //       }
+  //     )
+  // }
+
+  // ngOnInit() {
+  //   // capture paste
+  //   window.addEventListener("paste", this.onPaste.bind(this));
+  // }
+
+  // ngOnDestroy() {
+  //   // remove capture 
+  //   window.removeEventListener("paste", this.onPaste);
+  // }
   
 }

@@ -70,7 +70,7 @@ export class JobformComponent {
     company: new FormControl(this.data?.company ?? "", { validators: [Validators.required] }),
     link: new FormControl(this.data?.link ?? "", { validators: [Validators.required] }),
     source: new FormControl(this.data?.source ?? ""),
-    user: new FormControl(this.data?.user ?? "", { validators: [Validators.required] }),
+    user: new FormControl(this.data?.user ?? ""),
     status: new FormControl(this.data?.status ?? ApplicationStatus.None),
   });
 

@@ -16,12 +16,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { ApplicationStatus } from '../interfaces/job.interface';
 import { JobService } from '../services/job.service';
-
+import { checkLinkedin } from '../tools/parsetext';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    RouterLink, 
+    RouterLink,
     JoblistComponent,
     MatButtonModule,
   ],
@@ -33,7 +33,7 @@ export class DashboardComponent {
   readonly dialog = inject(MatDialog);
   private jobService = inject(JobService);
   // private jobList = inject(JoblistComponent);
-  @ViewChild(JoblistComponent) jobList!:JoblistComponent;
+  @ViewChild(JoblistComponent) jobList!: JoblistComponent;
 
   openDialog(): void {
 
@@ -54,10 +54,49 @@ export class DashboardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.jobService.createJob(result).subscribe(job=>{
+        this.jobService.createJob(result).subscribe(job => {
           this.jobList.updateList(); // update list
         });
       }
     });
+  }
+
+
+  onPaste(event: ClipboardEvent) {
+    navigator.clipboard
+      .readText()
+      .then(
+        (cliptext) => {
+          const linkedinRef = checkLinkedin(cliptext);
+          console.log("pasted: ", linkedinRef);
+          if (linkedinRef) {
+            this.jobService.fromLinkedin(linkedinRef).subscribe(newJob => {
+              console.log("newjob: ", newJob);
+              const dialogRef = this.dialog.open(JobformComponent, {
+                data: newJob
+              });
+              
+              dialogRef.afterClosed().subscribe(result => {
+                if (result !== undefined) {
+                  console.log("create ", result);
+                  this.jobService.createJob(result).subscribe(job => {
+                    this.jobList.updateList(); // update list
+                  });
+                }
+              });
+            });
+          }
+        }
+      )
+  }
+
+  ngOnInit() {
+    // capture paste
+    window.addEventListener("paste", this.onPaste.bind(this));
+  }
+
+  ngOnDestroy() {
+    // remove capture 
+    window.removeEventListener("paste", this.onPaste);
   }
 }

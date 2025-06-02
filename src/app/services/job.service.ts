@@ -100,4 +100,24 @@ export class JobService {
                 })
             )
     }
+
+    // API to use linkedin ref
+    fromLinkedin(linkedinRef : string): Observable<Job> {
+        const api_url = `${this.url}/fromlinkedin/${linkedinRef}`;
+
+        this.isLoading.set(true);
+        console.log("linkedin fetch", api_url);
+
+        return this.http.get<Job>(api_url)
+            .pipe(
+                tap(result => {
+                    this.isLoading.set(false);
+                    console.log("linkedin: ", result);
+                }),
+                catchError(error => {
+                    this.isLoading.set(false);
+                    throw error;
+                })
+            )
+    }
 } 
